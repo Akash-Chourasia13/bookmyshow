@@ -1,7 +1,24 @@
 import React from "react";
-import { Button, Form, Input } from "antd";
-import { Link } from "react-router-dom";
+import { Button, Form, Input, message } from "antd";
+import { Link, useNavigate } from "react-router-dom";
+import { axiosInstance } from "../../calls";
+import { LoginUser } from "../../calls/users";
 function Login() {
+	const navigate = useNavigate();
+	const onFinish = async (values) => {
+		try {
+			const response = await LoginUser(values);
+			if (response?.success) {
+				message.success(response?.message);
+				navigate("/");
+			} else {
+				message.error(response?.message);
+			}
+		} catch (error) {
+			console.log(error);
+			alert("Something went wrong");
+		}
+	};
 	return (
 		<>
 			<header className="App-header">
@@ -10,7 +27,7 @@ function Login() {
 						<h1>Login to BookMyShow</h1>
 					</section>
 					<section className="right-section">
-						<Form layout="vertical">
+						<Form layout="vertical" onFinish={onFinish}>
 							<Form.Item
 								label="Email"
 								htmlFor="email"

@@ -1,8 +1,26 @@
 import React from "react";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { Link } from "react-router-dom";
+import { RegisterUser } from "../../calls/users";
 
 function Register() {
+	const onFinish = async (values) => {
+		try {
+			const response = await RegisterUser(values);
+			console.log("Registration successful:", response);
+			if (response.success) {
+				// Redirect to login page or show success message
+				// window.location.href = "/login";
+				message.success("Registration successful! Please login.");
+			} else {
+				message.error(
+					response.message || "Registration failed. Please try again."
+				);
+			}
+		} catch (error) {
+			message.error("Registration failed:", error);
+		}
+	};
 	return (
 		<>
 			<header className="App-header">
@@ -11,7 +29,11 @@ function Register() {
 						<h1>Register to BookMyShow</h1>
 					</section>
 					<section className="right-section">
-						<Form layout="vertical">
+						<Form
+							layout="vertical"
+							onFinish={onFinish}
+							className="register-form"
+						>
 							<Form.Item
 								label="Name"
 								htmlFor="name"
