@@ -1,6 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/userModel");
 const jwt = require("jsonwebtoken");
+const authMiddleware = require("../middlewares/authMiddleware");
 
 router.post("/register", async (req, res) => {
 	console.log(req.body);
@@ -44,6 +45,26 @@ router.post("/login", async (req, res) => {
 			.status(200)
 			.json({ success: true, message: "Login Successful", data: token });
 	} catch (error) {
+		return res
+			.status(500)
+			.send({ message: "An Error has occured, Please try again later" });
+	}
+});
+
+router.get("/current", authMiddleware, async (req, res) => {
+	try {
+		const user = await User.findById(req.user.userId).select("-password");
+		if (!user) {
+			return res
+				.status(404)
+				.json({ success: false, message: "User not found" });
+		} else {
+			return res
+				.status(200)
+				.json({ success: true, message: "User found", data: user });
+		}
+	} catch (error) {
+		console.log(error);
 		return res
 			.status(500)
 			.send({ message: "An Error has occured, Please try again later" });
