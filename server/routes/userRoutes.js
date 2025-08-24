@@ -1,5 +1,6 @@
 const router = require("express").Router();
 const User = require("../models/userModel");
+const jwt = require("jsonwebtoken");
 
 router.post("/register", async (req, res) => {
 	console.log(req.body);
@@ -23,10 +24,11 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/login", async (req, res) => {
-	console.log(req.body);
-
 	try {
 		const user = await User.findOne({ email: req.body.email });
+		const token = jwt.sign({ userId: user._id }, process.env.jwt_secret, {
+			expiresIn: "1d",
+		});
 		if (!user) {
 			return res.status(400).json({
 				success: false,
@@ -40,7 +42,7 @@ router.post("/login", async (req, res) => {
 		}
 		return res
 			.status(200)
-			.json({ success: true, message: "Login Successful", data: user });
+			.json({ success: true, message: "Login Successful", data: token });
 	} catch (error) {
 		return res
 			.status(500)
