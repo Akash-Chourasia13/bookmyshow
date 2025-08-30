@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/login";
 import Register from "./pages/register";
+import ProtectedRoute from "./Components/ProtectedRoute";
 // import Bookings from "./pages/bookings"; // Uncomment when Bookings component is available
 
 function App() {
@@ -11,7 +12,14 @@ function App() {
 		<div>
 			<BrowserRouter>
 				<Routes>
-					<Route path="/" element={<Home />} />
+					<Route
+						path="/"
+						element={
+							<ProtectedRoute>
+								<Home />
+							</ProtectedRoute>
+						}
+					/>
 					<Route path="/login" element={<Login />} />
 					<Route path="/register" element={<Register />} />
 					{/* <Route path="/bookings" element={<Bookings />} />  */}
