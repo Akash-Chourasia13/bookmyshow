@@ -38,6 +38,11 @@ function MovieForm({
 		}
 	};
 
+	const handleCancel = () => {
+		setIsModalOpen(false);
+		setSelectedMovie(null);
+	};
+
 	return (
 		<Modal
 			centered
@@ -84,6 +89,56 @@ function MovieForm({
 								type="number"
 								placeholder="Enter the movie duration here"
 							/>
+						</Form.Item>
+					</Col>
+					<Col span={12}>
+						<Form.Item
+							label="Genre"
+							name="genre"
+							rules={[{ required: true, message: "Please input movie genre!" }]}
+						>
+							<Input placeholder="Enter the movie genre here" />
+						</Form.Item>
+					</Col>
+					<Col span={12}>
+						<Form.Item
+							label="Language"
+							name="language"
+							rules={[
+								{ required: true, message: "Please input movie language!" },
+							]}
+						>
+							<Input
+								placeholder="Enter the movie language here"
+								options={[
+									{ value: "English", label: "English" },
+									{ value: "Hindi", label: "Hindi" },
+									{ value: "Punjabi", label: "Punjabi" },
+									{ value: "Telugu", label: "Telugu" },
+									{ value: "Bengali", label: "Bengali" },
+									{ value: "German", label: "German" },
+								]}
+							/>
+						</Form.Item>
+					</Col>
+					<Col span={12}>
+						<Form.Item
+							label="Release Date"
+							name="releaseDate"
+							rules={[
+								{ required: true, message: "Please input movie release date!" },
+							]}
+						>
+							<DatePicker format="DD-MM-YYYY" />
+						</Form.Item>
+					</Col>
+					<Col span={24}>
+						<Form.Item
+							label="Poster URL"
+							name="poster"
+							rules={[{ required: true, message: "Please input poster URL!" }]}
+						>
+							<Input placeholder="Enter the poster URL here" />
 						</Form.Item>
 					</Col>
 				</Row>
