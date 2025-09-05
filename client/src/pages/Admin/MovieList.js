@@ -19,18 +19,18 @@ function MovieList() {
 	const dispatch = useDispatch();
 
 	// get all movies from the server
+	const getData = async () => {
+		dispatch(ShowLoading());
+		const resp = await getAllMovies();
+		const allMovies = resp.data;
+		setMovies(
+			allMovies.map((item) => {
+				return { ...item, key: `movie${item._id}` };
+			})
+		);
+		dispatch(HideLoading());
+	};
 	useEffect(() => {
-		const getData = async () => {
-			dispatch(ShowLoading());
-			const resp = await getAllMovies();
-			const allMovies = resp.data;
-			setMovies(
-				allMovies.map((item) => {
-					return { ...item, key: `movie${item._id}` };
-				})
-			);
-			dispatch(HideLoading());
-		};
 		getData();
 	}, []);
 
@@ -124,6 +124,7 @@ function MovieList() {
 						selectedMovie={selectedMovie}
 						formType={formType}
 						setSelectedMovie={setSelectedMovie}
+						getData={getData}
 					/>
 				)}
 				{isDeleteModalOpen && (
@@ -132,6 +133,7 @@ function MovieList() {
 						setIsDeleteModalOpen={setIsDeleteModalOpen}
 						selectedMovie={selectedMovie}
 						setSelectedMovie={setSelectedMovie}
+						getData={getData}
 					/>
 				)}
 			</div>
