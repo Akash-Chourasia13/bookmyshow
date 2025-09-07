@@ -1,26 +1,25 @@
 import React, { useState, useEffect } from "react";
-import Table from "antd/lib/table";
+import { Button, Table } from "antd";
 import { getAllMovies } from "../../calls/movies";
 import { useDispatch } from "react-redux";
-import { ShowLoading, HideLoading } from "../../redux/loaderSlice";
+import { showLoading, hideLoading } from "../../redux/loaderSlice";
 import moment from "moment";
-import EditOutlined from "@ant-design/icons/lib/icons/EditOutlined";
-import DeleteOutlined from "@ant-design/icons/lib/icons/DeleteOutlined";
+import { EditOutlined, DeleteOutlined } from "@ant-design/icons";
 import MovieForm from "./MovieForm";
 import DeleteMovieModal from "./DeleteMovieModal";
-import { Button } from "antd";
 
 function MovieList() {
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	const [formType, setFormType] = useState("add");
 	const [movies, setMovies] = useState([]);
+	//editing deletion
 	const [selectedMovie, setSelectedMovie] = useState(null);
 	const dispatch = useDispatch();
 
-	// get all movies from the server
+	//get all movies
 	const getData = async () => {
-		dispatch(ShowLoading());
+		dispatch(showLoading());
 		const resp = await getAllMovies();
 		const allMovies = resp.data;
 		setMovies(
@@ -28,7 +27,7 @@ function MovieList() {
 				return { ...item, key: `movie${item._id}` };
 			})
 		);
-		dispatch(HideLoading());
+		dispatch(hideLoading());
 	};
 	useEffect(() => {
 		getData();
@@ -38,19 +37,21 @@ function MovieList() {
 		{
 			title: "Poster",
 			dataIndex: "poster",
-			render: (text, data) => (
-				<img
-					src={data.poster}
-					alt="movie poster"
-					width="75"
-					height="115"
-					style={{ objectFit: "cover" }}
-				/>
-			),
+			render: (text, data) => {
+				return (
+					<img
+						width="75"
+						height="115"
+						style={{ objectFit: "cover" }}
+						src={data.poster}
+						alt="movie poster"
+					/>
+				);
+			},
 		},
 		{
 			title: "Movie Name",
-			dataIndex: "name",
+			dataIndex: "title",
 		},
 		{
 			title: "Description",
@@ -59,7 +60,9 @@ function MovieList() {
 		{
 			title: "Duration",
 			dataIndex: "duration",
-			render: (text) => <span>{text} mins</span>,
+			render: (text) => {
+				return `${text} Min`;
+			},
 		},
 		{
 			title: "Genre",
@@ -73,7 +76,8 @@ function MovieList() {
 			title: "Release Date",
 			dataIndex: "releaseDate",
 			render: (text, data) => {
-				return moment(data.releaseDate).format("MM-DD-YYYY");
+				//can be done using inbuilt lib ?
+				return moment(data.releaseData).format("MM-DD-YYYY");
 			},
 		},
 		{
@@ -111,6 +115,8 @@ function MovieList() {
 						setIsModalOpen(true);
 						setFormType("add");
 					}}
+					Add
+					Movie
 				>
 					Add Movie
 				</Button>
@@ -125,8 +131,10 @@ function MovieList() {
 						formType={formType}
 						setSelectedMovie={setSelectedMovie}
 						getData={getData}
+						//
 					/>
 				)}
+
 				{isDeleteModalOpen && (
 					<DeleteMovieModal
 						isDeleteModalOpen={isDeleteModalOpen}

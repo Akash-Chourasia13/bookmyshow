@@ -9,7 +9,8 @@ import { showLoading, hideLoading } from "../../redux/loaderSlice";
 import ShowModal from "./ShowModal";
 
 const TheatreList = () => {
-	const { user } = useSelector((state) => state.user);
+	const { user } = useSelector((state) => state.users);
+	console.log(user);
 	const [isModalOpen, setIsModalOpen] = useState(false);
 	const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
 	const [isShowModalOpen, setIsShowModalOpen] = useState(false);
@@ -21,10 +22,10 @@ const TheatreList = () => {
 	const getData = async () => {
 		try {
 			dispatch(showLoading());
-			const response = await getAllTheatres({ owner: user._id });
+			const response = await getAllTheatres({ ownerId: user._id });
 			if (response.success) {
 				const allTheatres = response.data;
-				// console.log(allTheatres);
+				console.log(allTheatres);
 				setTheatres(
 					allTheatres.map(function (item) {
 						return { ...item, key: `theatre${item._id}` };

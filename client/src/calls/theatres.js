@@ -23,6 +23,7 @@ export const getAllTheatresForAdmin = async () => {
 export const getAllTheatres = async (payload) => {
 	try {
 		const { ownerId } = payload;
+		console.log("jinny", ownerId);
 		const response = await axiosInstance.get(
 			`/api/theatre/by-owner/${ownerId}`
 		);

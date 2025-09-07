@@ -1,9 +1,14 @@
 import React from "react";
-import { Col, Modal, Row, Form, Input, Button, message, TextArea } from "antd";
+import { Col, Modal, Row, Form, Input, Button, message } from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { showLoading, hideLoading } from "../../redux/loaderSlice";
 import { addTheatre, updateTheatre } from "../../calls/theatres";
-
+const { TextArea } = Input;
+// const user = {"email":"sd123@gmail.com",
+//   "name":"Sudheer Darla",
+//   "role":"user",
+//   "_id":"670c9094f65dd9388693f30b"
+// };
 function TheatreFormModal({
 	isModalOpen,
 	selectedTheatre,
@@ -13,7 +18,7 @@ function TheatreFormModal({
 	getData,
 }) {
 	const dispatch = useDispatch();
-	const { user } = useSelector((state) => state.user);
+	const { user } = useSelector((state) => state.users);
 
 	const handleCancel = () => {
 		setIsModalOpen(false);

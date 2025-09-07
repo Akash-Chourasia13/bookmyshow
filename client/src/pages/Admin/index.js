@@ -3,19 +3,25 @@ import MovieList from "./MovieList";
 import TheatresTable from "./TheatresTable";
 import { Tabs } from "antd";
 
-function Admin() {
+function index() {
 	const tabitems = [
-		{ label: "Movies", key: "1", children: <MovieList /> },
-		{ label: "Theatres", key: "2", children: <TheatresTable /> },
+		{
+			key: "1",
+			label: "Movies",
+			children: <MovieList></MovieList>,
+		},
+		{
+			key: "2",
+			label: "Theatres",
+			children: <TheatresTable></TheatresTable>,
+		},
 	];
 	return (
 		<div>
-			<Tabs>
-				<h1>Admin Page</h1>
-				<Tabs items={tabitems} />
-			</Tabs>
+			<h1>Admin Page</h1>
+			<Tabs items={tabitems}></Tabs>
 		</div>
 	);
 }
 
-export default Admin;
+export default index;

@@ -13,7 +13,7 @@ function TheatresTable() {
 			const response = await getAllTheatresForAdmin();
 			if (response.success) {
 				const allTheatres = response.data;
-				// console.log(allTheatres);
+				console.log(allTheatres);
 				setTheatres(
 					allTheatres.map(function (item) {
 						return { ...item, key: `theatre${item._id}` };
