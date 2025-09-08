@@ -1,22 +1,17 @@
 import React, { useEffect } from "react";
 import { Button, Form, Input, message } from "antd";
 import { Link, useNavigate } from "react-router-dom";
-import { LoginUser } from "../../calls/users";
+import { ForgetPassword, LoginUser } from "../calls/users";
 
-function Login() {
-	useEffect(() => {
-		if (localStorage.getItem("token")) {
-			navigate("/");
-		}
-	}, []);
-	const navigate = useNavigate();
+function Forget() {
 	const onFinish = async (values) => {
+		console.log(values);
 		try {
-			const response = await LoginUser(values);
-			if (response.success) {
+			const response = await ForgetPassword(values);
+			if (response.status === "success") {
 				message.success(response.message);
-				localStorage.setItem("token", response.data);
-				navigate("/");
+				alert("Otp sent to email");
+				window.location.href = "/reset";
 			} else {
 				message.error(response.message);
 			}
@@ -24,12 +19,18 @@ function Login() {
 			message.error(err.message);
 		}
 	};
+	const navigate = useNavigate();
+	useEffect(() => {
+		if (localStorage.getItem("token")) {
+			navigate("/");
+		}
+	}, []);
 	return (
 		<>
 			<header className="App-header">
-				<main className="main-area" mw-500 text-center px-3>
+				<main className="main-area mw-500 text-center px-3">
 					<section className="left-section">
-						<h1>Login to BookMyShow</h1>
+						<h1>Forget Password</h1>
 					</section>
 					<section className="right-section">
 						<Form layout="vertical" onFinish={onFinish}>
@@ -47,37 +48,20 @@ function Login() {
 								></Input>
 							</Form.Item>
 
-							<Form.Item
-								label="Password"
-								htmlFor="password"
-								name="password"
-								className="d-block"
-								rules={[{ required: true, message: "Password is required" }]}
-							>
-								<Input
-									id="password"
-									type="password"
-									placeholder="Enter your Password"
-								></Input>
-							</Form.Item>
-
 							<Form.Item className="d-block">
 								<Button
 									type="primary"
 									block
 									htmlType="submit"
-									style={{ fontSize: "1rem", fontWeight: 600 }}
+									style={{ fontSize: "1rem", fontWeight: "600" }}
 								>
-									Login
+									SEND OTP
 								</Button>
 							</Form.Item>
 						</Form>
 						<div>
 							<p>
-								New User ? <Link to="/register">Register Here</Link>
-							</p>
-							<p>
-								Forgot Password ? <Link to="/forget">Click Here</Link>
+								Existing User? <Link to="/login">Login Here</Link>
 							</p>
 						</div>
 					</section>
@@ -87,4 +71,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default Forget;
